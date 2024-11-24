@@ -185,6 +185,30 @@ export class FinalReportController {
     }
   }
 
+  @Get('/kordinate/:guid_rute')
+  async findKordinateByGuidRute(
+    @Param('guid_rute') guid_rute: string,
+  ): Promise<WebResponse<ResponseFinalReport[]>> {
+    try {
+      const result = await this.finalReportService.AllKordinate(guid_rute);
+      return {
+        success: true,
+        message: 'Data berhasil diambil',
+        data: result,
+        statusCode: HttpStatus.OK,
+      };
+    }catch (error){
+      throw new HttpException(
+        {
+          success: false,
+          message: error.message,
+          statusCode: HttpStatus.NOT_FOUND,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
+
   @Get('/get/:id')
   async getById(
     @Param('id') id: string,

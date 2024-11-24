@@ -746,6 +746,18 @@ export class FinalReportService {
     return reports.map((report) => this.mapToResponseFinalReport(report));
   }
 
+  async AllKordinate(guid_rute: string): Promise<ResponseFinalReport[]> {
+
+    const report = await this.finalReportModel
+      .find({ guid_rute }).select('id coordinate namafile rute status_jalan').exec();
+
+    if (!report || report.length === 0) {
+        throw new NotFoundException('Data Report tidak ditemukan');
+      }
+
+    return report.map((report) => this.mapToResponseFinalReport(report));
+  }
+
   async findAllkordinate(query: Query): Promise<any[]> {
     // Pastikan bahwa kedua parameter `guid_rute` dan `tanggal_survey` diberikan
     if (!query.guid_rute || !query.tanggal_survey) {
